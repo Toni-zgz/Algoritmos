@@ -19,7 +19,7 @@
       (println "Error: No es un objeto Pila")))
   (stk-pop [this]
     (if (list? content)
-      (Pila. (pop content))
+      (vector (peek content) (Pila. (pop content)))
       (println "Error: No es un objeto Pila")))
   IEquiv
   (equiv [this other] (and
@@ -37,5 +37,9 @@
          (test/is (= (stk-peek c) 4))
          (test/is (equiv (stk-push a 3) b))
          (test/is (equiv (stk-push b 4) c))
-         (test/is (equiv (stk-pop c) b))
-         (test/is (equiv (stk-pop b) a)))
+         (let [value (stk-pop c)]
+           (test/is (= (first value) 4))
+           (test/is (equiv (second value) b)))
+         (let [value (stk-pop b)]
+           (test/is (= (first value) 3))
+           (test/is (equiv (second value) a))))
