@@ -22,7 +22,7 @@
 ;;; Ejemplo de utilización
 (require '[clojure.test :as test])
 (def a (->Pila '()))
-(test/testing pila-tests
+(test/testing "pila-tests"
          (test/is (= (stk-peek a) nil))
          (test/is (= (stk-push a 3) '(3)))
          (test/is (= (stk-peek a) 3))
