@@ -1,0 +1,1 @@
+(deftype Grafo [valor adyacente])
