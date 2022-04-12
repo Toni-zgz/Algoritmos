@@ -1,4 +1,5 @@
 (ns Pila)
+; Protocolos
 (defprotocol IApilable
   (stk-push [this, elt])
   (stk-pop [this])
@@ -7,21 +8,36 @@
 (defprotocol IEquiv
   (equiv [this other]))
 
+; Tipo Pila
 (deftype Pila [content]
   IApilable
+  ; stk-push :: Pila -> a -> Pila
+  ; este método inserta un valor de tipo a
+  ; en el frente de la pila.
   (stk-push [this, elt]
     (if (list? content)
       (Pila. (conj content elt))
       (println "Error: No es un objeto Pila")))
+  ; stk-peek :: Pila -> a
+  ; este método extrae el valor que está en el
+  ; frente de la pila sin modificar la pila.
   (stk-peek [this]
     (if (list? content)
       (peek content)
       (println "Error: No es un objeto Pila")))
+  ; stk-pop :: Pila -> [a, Pila]
+  ; este método extrae el valor que esta en el 
+  ; frente de la pila y la pila sin ese valor.
   (stk-pop [this]
     (if (list? content)
       (vector (peek content) (Pila. (pop content)))
       (println "Error: No es un objeto Pila")))
+  
   IEquiv
+  ; equiv :: Pila -> Pila -> Boolean
+  ; este método nos da un valor true si ambos
+  ; parámetros tienen el mismo tipo y su content
+  ; tienen los mismos valores.
   (equiv [this other] (and
                        (= (type this) (type other))
                        (= (.content this) (.content other)))))
