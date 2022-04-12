@@ -21,7 +21,7 @@
       (println "Error: No es un objeto Cola")))
   (que-dequeue [this]
     (if (vector? content)
-      (Cola. (pop content))
+      (vector (peek content)(Cola. (pop content)))
       (println "Error: No es un objeto Cola")))
   IEquiv
   (equiv [this other] 
@@ -42,6 +42,12 @@
          (test/is (= (que-peek d) 4))
          (test/is (equiv (que-queue a 3) b))
          (test/is (equiv (que-queue b 4) c))
-         (test/is (equiv (que-dequeue c) d))
-         (test/is (equiv (que-dequeue b) a))
-         (test/is (equiv (que-dequeue d) a)))
+         (let [value (que-dequeue c)]
+             (test/is (= (first value) 3))
+             (test/is (equiv (second value) d)))
+         (let [value (que-dequeue b)]
+             (test/is (= (first value) 3))
+             (test/is (equiv (second value) a)))
+         (let [value (que-dequeue d)]
+             (test/is (= (first value) 4))
+             (test/is (equiv (second value) a))))
