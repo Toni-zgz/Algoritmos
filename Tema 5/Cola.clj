@@ -5,9 +5,6 @@
   (que-dequeue [this])
   (que-peek [this]))
 
-(defprotocol IEquiv
-  (equiv [this other]))
-
 ; Tipo Cola
 (deftype Cola [content]
   IEncolable
@@ -37,15 +34,14 @@
       (vector (peek content)(Cola. (pop content)))
       (println "Error: No es un objeto Cola")))
   
-  IEquiv
-  ; equiv :: Cola -> Cola -> Boolean
-  ; Este método devuelve true si los argumentos
-  ; tienen el mismo tipo y el mismo valor de 
-  ; content.
-  (equiv [this other] 
-         (and 
-          (= (type this) (type other))
-          (= (.content this) (.content other)))))
+  java.lang.Object
+  ; equals :: Cola -> Cola -> Boolean
+  ; este método nos da un valor true si ambos
+  ; parámetros tienen el mismo tipo y su content
+  ; tienen los mismos valores.
+  (equals [this other] (and
+                    (= (type this) (type other))
+                    (= (.content this) (.content other)))))
 ; nueva-cola :: () -> Cola
 ; Esta función crea una cola vacia.
 (defn nueva-cola []
@@ -62,14 +58,8 @@
          (test/is (= (que-peek b) 3))
          (test/is (= (que-peek c) 3))
          (test/is (= (que-peek d) 4))
-         (test/is (equiv (que-queue a 3) b))
-         (test/is (equiv (que-queue b 4) c))
-         (let [value (que-dequeue c)]
-             (test/is (= (first value) 3))
-             (test/is (equiv (second value) d)))
-         (let [value (que-dequeue b)]
-             (test/is (= (first value) 3))
-             (test/is (equiv (second value) a)))
-         (let [value (que-dequeue d)]
-             (test/is (= (first value) 4))
-             (test/is (equiv (second value) a))))
+         (test/is (= (que-queue a 3) b))
+         (test/is (= (que-queue b 4) c))
+         (test/is (= (que-dequeue c) [3 d]))
+         (test/is (= (que-dequeue b) [3 a]))
+         (test/is (= (que-dequeue d) [4 a])))

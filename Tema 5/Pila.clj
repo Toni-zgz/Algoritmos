@@ -5,9 +5,6 @@
   (stk-pop [this])
   (stk-peek [this]))
 
-(defprotocol IEquiv
-  (equiv [this other]))
-
 ; Tipo Pila
 (deftype Pila [content]
   IApilable
@@ -33,14 +30,16 @@
       (vector (peek content) (Pila. (pop content)))
       (println "Error: No es un objeto Pila")))
   
-  IEquiv
-  ; equiv :: Pila -> Pila -> Boolean
+  java.lang.Object
+  ; equals :: Pila -> Pila -> Boolean
   ; este método nos da un valor true si ambos
   ; parámetros tienen el mismo tipo y su content
   ; tienen los mismos valores.
-  (equiv [this other] (and
-                       (= (type this) (type other))
-                       (= (.content this) (.content other)))))
+  (equals [this other] (and
+                    (= (type this) (type other))
+                    (= (.content this) (.content other))))
+          
+)
 ; nueva-pila :: () -> Pila
 ; Esta función crea una pila vacia
 (defn nueva-pila []
@@ -55,11 +54,7 @@
          (test/is (= (stk-peek a) nil))
          (test/is (= (stk-peek b) 3))
          (test/is (= (stk-peek c) 4))
-         (test/is (equiv (stk-push a 3) b))
-         (test/is (equiv (stk-push b 4) c))
-         (let [value (stk-pop c)]
-           (test/is (= (first value) 4))
-           (test/is (equiv (second value) b)))
-         (let [value (stk-pop b)]
-           (test/is (= (first value) 3))
-           (test/is (equiv (second value) a))))
+         (test/is (= (stk-push a 3) b))
+         (test/is (= (stk-push b 4) c))
+         (test/is (= (stk-pop c) [4 b]))
+         (test/is (= (stk-pop b) [3 a])))
