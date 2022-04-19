@@ -46,7 +46,6 @@
          (and 
           (= (type this) (type other))
           (= (.content this) (.content other)))))
-
 ; nueva-cola :: () -> Cola
 ; Esta función crea una cola vacia.
 (defn nueva-cola []

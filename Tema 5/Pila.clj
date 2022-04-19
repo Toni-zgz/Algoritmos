@@ -41,11 +41,11 @@
   (equiv [this other] (and
                        (= (type this) (type other))
                        (= (.content this) (.content other)))))
-
 ; nueva-pila :: () -> Pila
 ; Esta función crea una pila vacia
 (defn nueva-pila []
   (->Pila '()))
+
 ;;; Ejemplo de utilización
 (require '[clojure.test :as test])
 (def a (nueva-pila))
