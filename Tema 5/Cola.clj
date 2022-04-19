@@ -47,12 +47,17 @@
           (= (type this) (type other))
           (= (.content this) (.content other)))))
 
+; nueva-cola :: () -> Cola
+; Esta función crea una cola vacia.
+(defn nueva-cola []
+    (->Cola []))
+
 ;;; Ejemplo de utilización
 (require '[clojure.test :as test])
-(def a (->Cola []))
-(def b (->Cola [3]))
-(def c (->Cola [4 3]))
-(def d (->Cola [4]))
+(def a (nueva-cola))
+(def b (que-queue a 3))
+(def c (que-queue b 4))
+(def d (que-queue a 4))
 (test/testing "cola-tests"
          (test/is (= (que-peek a) nil))
          (test/is (= (que-peek b) 3))

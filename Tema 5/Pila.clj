@@ -42,11 +42,15 @@
                        (= (type this) (type other))
                        (= (.content this) (.content other)))))
 
+; nueva-pila :: () -> Pila
+; Esta función crea una pila vacia
+(defn nueva-pila []
+  (->Pila '()))
 ;;; Ejemplo de utilización
 (require '[clojure.test :as test])
-(def a (->Pila '()))
-(def b (->Pila '(3)))
-(def c (->Pila '(4 3)))
+(def a (nueva-pila))
+(def b (stk-push a 3))
+(def c (stk-push b 4))
 (test/testing "pila-tests"
          (test/is (= (stk-peek a) nil))
          (test/is (= (stk-peek b) 3))
