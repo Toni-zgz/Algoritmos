@@ -31,7 +31,13 @@
               (let [nuevo-conjunto (assoc conjunto (- elt2 1) elt1)]
                 (Particion. nuevo-conjunto altura))
               (let [nuevo-conjunto (assoc conjunto (- elt1 1) elt2)]
-                (Particion. nuevo-conjunto altura)))))))
+                (Particion. nuevo-conjunto altura))))))
+  java.lang.Object
+  (equals [this other]
+     (and
+        (= (type this) (type other))
+        (= (.conjunto this) (.conjunto other))
+        (= (.altura this) (.altura other)))))
 
 ; nueva-particion :: Integer -> Particion
 ; Esta función crea una particion inicializada
