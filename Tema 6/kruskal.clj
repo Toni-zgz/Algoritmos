@@ -115,8 +115,8 @@
 
 ;;; Ejemplo de utilización
 (require '[clojure.test :as test])
-(def nod (into [] (range 1 8)))
-(def ars ['(1 2) '(1 4) '(2 3) '(2 4) '(2 5) '(3 5) '(3 6) '(4 5) '(4 7) '(5 6) '(5 7) '(6 7)])
-(def g (nuevo-grafo-adya nod ars))
-(def ars-dist ['((1 2) 1) '((1 4) 4) '((2 3) 2) '((2 4) 6) '((2 5) 4) '((3 5) 5) '((3 6) 6) '((4 5) 3) '((4 7) 4) '((5 6) 8) '((5 7) 7) '((6 7) 3)])
-(test/is (= (kruskal g ars-dist) ['(1 2) '(2 3) '(4 5) '(6 7) '(1 4) '(4 7)]))
+(let [ars-dist ['((1 2) 1) '((1 4) 4) '((2 3) 2) '((2 4) 6) '((2 5) 4) '((3 5) 5) '((3 6) 6) '((4 5) 3) '((4 7) 4) '((5 6) 8) '((5 7) 7) '((6 7) 3)]
+      nod (into [] (range 1 8))
+      ars (into [] (map #(first %) ars-dist))
+      g (nuevo-grafo-adya nod ars)]
+  (test/is (= (kruskal g ars-dist) ['(1 2) '(2 3) '(4 5) '(6 7) '(1 4) '(4 7)])))
