@@ -19,34 +19,6 @@
     (dorun (map (fn [elt] (aset ary-adyac (first elt) (second elt) true)) lista-indices))
     (->Grafo-adya nodos ary-adyac)))
 
-; buscar :: [(a, a)] -> [a] -> (a, a)
-(defn buscar [aristas vector-nodos]
-  (loop [aristas-bucle aristas]
-    (let [arista (first aristas-bucle)
-          elt1  (first arista)
-          elt2  (second arista)
-          esta-en-vector? (fn [valor] (> (count (filter (fn [elt] (= elt valor)) vector-nodos)) 0))
-          elt1-en-vector (esta-en-vector? elt1)
-          elt2-en-vector (esta-en-vector? elt2)]
-      (if (or (and elt1-en-vector
-                   (not elt2-en-vector))
-              (and (not elt1-en-vector)
-                   elt2-en-vector)) 
-        arista
-        (recur (rest aristas-bucle))))))
-
-; unir :: [a] -> (a, a) -> [a]
-(defn unir [vector par]
-  (let [primer (first par)
-        segundo (second par)
-        temp  (conj vector primer)
-        final (conj temp segundo)]
-    (into [] (distinct final))))
-
-; quitar :: [(a, a)] -> (a, a) -> [(a, a)]
-(defn quitar [aristas arista]
-  (filter (fn [elt] (not (= elt arista))) aristas))
-
 ; prim :: Grafo -> [((a, a), Int)] -> [(a, a)]
 (defn prim [grafo aristas-long]
   (let [vector-T (vector)
@@ -59,7 +31,32 @@
                                   dist-elt2 (second elt2)]
                                (< dist-elt1 dist-elt2))) 
                           aristas-long)
-        aristas-ord (map #(first %) aristas-long-ord)] 
+        aristas-ord (map #(first %) aristas-long-ord)
+        ; quitar :: [(a, a)] -> (a, a) -> [(a, a)]
+        quitar (fn [aristas arista]
+                 (filter (fn [elt] (not (= elt arista))) aristas))
+        ; unir :: [a] -> (a, a) -> [a]
+        unir (fn [vector par] 
+               (let [primer (first par)
+                     segundo (second par)
+                     temp  (conj vector primer)
+                     final (conj temp segundo)]
+                 (into [] (distinct final))))
+        ; buscar :: [(a, a)] -> [a] -> (a, a)
+        buscar (fn buscar [aristas vector-nodos]
+                  (loop [aristas-bucle aristas]
+                    (let [arista (first aristas-bucle)
+                          elt1  (first arista)
+                          elt2  (second arista)
+                          esta-en-vector? (fn [valor] (>(count (filter (fn [elt] (= elt valor)) vector-nodos)) 0))
+                          elt1-en-vector (esta-en-vector? elt1)
+                          elt2-en-vector (esta-en-vector? elt2)]
+                      (if (or (and elt1-en-vector
+                                   (not elt2-en-vector))
+                              (and (not elt1-en-vector)
+                                   elt2-en-vector))
+                        arista
+                        (recur (rest aristas-bucle))))))]
     (loop [vector-B-bucle vector-B
            vector-salida []
            aristas-bucle aristas-ord]
