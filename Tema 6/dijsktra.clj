@@ -43,6 +43,10 @@
                                  D-w (get vector-valor (- w 2))
                                  D-v (get vector-valor (- v 2))
                                  desp (aget array-dist (- v 1) (- w 1))
+; si desp = 0, eso significa que no hay conexion
+; entre esos nodos y, por lo tanto, su distancia es
+; infinita (como no podemos programar una distancia 
+; infinita hacemos esa distancia = 1 millon)
                                  desp-corr (if (= desp 0)
                                              1000000
                                              desp)
