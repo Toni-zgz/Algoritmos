@@ -1,7 +1,7 @@
 (ns Pila)
 ; Protocolos
 (defprotocol IApilable
-  (stk-push [this, elt])
+  (stk-push [this elt])
   (stk-pop [this])
   (stk-peek [this]))
 
