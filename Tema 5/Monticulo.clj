@@ -48,8 +48,9 @@
                            (+ (* 2 j) 1)
                            nuevo-k1)
               nuevo-Tk (get datos-bucle nuevo-k2)
-              datos-1 (assoc datos-bucle j nuevo-Tk)
-              datos-nuevos (assoc datos-1 nuevo-k2 Tj)]
+              datos-nuevos (-> datos-bucle 
+                             (assoc j nuevo-Tk)
+                             (assoc nuevo-k2 Tj))]
           (if (= j nuevo-k2)
               datos-nuevos
               (recur datos-nuevos nuevo-k2))))))
@@ -90,11 +91,12 @@
 ;;; Ejemplo de utilización
 (require '[clojure.test :as test])
 (test/testing "Monticulo tests" 
-     (let [m1 (crear-monticulo-binario [1 6 9 2 7 5 2 7 4 10])
-           m2 (->Monticulo [10 9 7 7 6 5 2 2 4 1] > 2)
-           m3 (crear-monticulo-binario-invertido [1 6 9 2 7 5 2 7 4 10])
-           m4 (->Monticulo [1 2 4 2 7 5 6 7 9 10] < 2)]
+     (let [m1 (crear-monticulo-binario '(1 6 9 2 7 5 2 7 4 10))
+           m2 (->Monticulo '(10 9 7 7 6 5 2 2 4 1) > 2)
+           m3 (crear-monticulo-binario-invertido '(1 6 9 2 7 5 2 7 4 10))
+           m4 (->Monticulo '(1 2 4 2 7 5 6 7 9 10) < 2)]
      (test/is (= m1 m2))
      (test/is (= m3 m4))
      (test/is (= (obtener-raiz m1) 10))
-     (test/is (= (obtener-raiz m3) 1))))
+     (test/is (= (obtener-raiz m3) 1))
+     (test/is (= (.datos (crear-monticulo-binario '())) []))))
