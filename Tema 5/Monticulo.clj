@@ -24,13 +24,11 @@
 (defn obtener-raiz [mont]
   (get (.datos mont) 0))
 
-; hundir :: Monticulo -> Integer -> [Integer]
+; hundir :: [Integer] -> (Integer -> Integer -> Bool) -> Integer -> [Integer]
 ; esta función hunde el nodo i para restablecer la propiedad del 
 ; monticulo.
-(defn hundir [mont nodo]
-  (let [datos (.datos mont)
-        n (- (count datos) 1)
-        op (.comparador mont)]
+(defn hundir [datos op nodo]
+  (let [n (- (count datos) 1)]
     (loop [datos-bucle datos
            k (- nodo 1)]
         (let [j k
@@ -55,13 +53,11 @@
               datos-nuevos 
               (recur datos-nuevos nuevo-k2))))))
 
-; flotar :: Monticulo -> Integer -> [Integer]
+; flotar :: [Integer] -> (Integer -> Integer -> Bool) -> Integer -> [Integer]
 ; esta función hace flotar el nodo i para restablecer la propiedad del 
 ; monticulo.
-(defn flotar [mont nodo]
-  (let [datos (.datos mont)
-        n (- (count datos) 1)
-        op (.comparador mont)]
+(defn flotar [datos op nodo]
+  (let [n (- (count datos) 1)]
     (loop [datos-bucle datos
            k nodo]
         (let [j k
@@ -94,8 +90,7 @@
         (if (= indices '())
             (->Monticulo datos-bucle comparador num-hijos)
             (let [indice (first indices)
-                  nuevo-mont (->Monticulo datos-bucle comparador num-hijos)
-                  nuevos-datos-bucle (hundir nuevo-mont indice)]
+                  nuevos-datos-bucle (hundir datos-bucle comparador indice)]
               (recur (rest indices) nuevos-datos-bucle))))))
 
 ; anadir-nodo :: Monticulo -> Integer -> Monticulo
@@ -105,10 +100,10 @@
         comparador (.comparador mont)
         num-hijos (.numero-hijos mont)
         nuevos-datos (conj datos valor)
-        nuevo-mont (->Monticulo nuevos-datos comparador num-hijos)
-        num-elem (count datos)
-        ary-salida (flotar nuevo-mont (+ num-elem 1))]
-    (->Monticulo ary-salida comparador num-hijos)))
+        num-elem (count datos)]
+    (->
+      (flotar nuevos-datos comparador (+ num-elem 1))
+      (->Monticulo comparador num-hijos))))
 
 ; crear-monticulo-binario :: Secuencia -> Monticulo
 ; Esta función genera un monticulo binario a partir 
