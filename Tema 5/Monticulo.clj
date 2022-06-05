@@ -57,25 +57,24 @@
 ; esta función hace flotar el nodo i para restablecer la propiedad del 
 ; monticulo.
 (defn flotar [datos op nodo]
-  (let [n (- (count datos) 1)]
-    (loop [datos-bucle datos
-           k nodo]
-        (let [j k
-              j2 (quot j 2)
-              Tk (get datos-bucle (- k 1))
-              Tj2 (get datos-bucle (- j2 1))
-              Tj (get datos-bucle (- j 1))
-              nuevo-k (if (and (> j 1)
-                               (not (op Tj2 Tk))) 
-                           j2
-                           k)
-              nuevo-Tk (get datos-bucle (- nuevo-k 1))
-              datos-nuevos (-> datos-bucle 
-                             (assoc (- j 1) nuevo-Tk)
-                             (assoc (- nuevo-k 1) Tj))]
-          (if (= j nuevo-k)
-              datos-nuevos
-              (recur datos-nuevos nuevo-k))))))
+  (loop [datos-bucle datos
+         k nodo]
+    (let [j k
+          j2 (quot j 2)
+          Tk (get datos-bucle (- k 1))
+          Tj2 (get datos-bucle (- j2 1))
+          Tj (get datos-bucle (- j 1))
+          nuevo-k (if (and (> j 1)
+                           (not (op Tj2 Tk))) 
+                      j2
+                      k)
+          nuevo-Tk (get datos-bucle (- nuevo-k 1))
+          datos-nuevos (-> datos-bucle 
+                           (assoc (- j 1) nuevo-Tk)
+                           (assoc (- nuevo-k 1) Tj))]
+      (if (= j nuevo-k)
+          datos-nuevos
+          (recur datos-nuevos nuevo-k)))))
 
 ; borrar-raiz :: Monticulo -> Monticulo
 ; esta función borra el elemento raiz y asegura la 
@@ -142,10 +141,14 @@
            m2 (->Monticulo '(10 9 7 7 6 5 2 2 4 1) > 2)
            m3 (crear-monticulo-binario-invertido '(1 6 9 2 7 5 2 7 4 10))
            m4 (->Monticulo '(1 2 4 2 7 5 6 7 9 10) < 2)
-           m5 (->Monticulo '(11 10 7 7 9 5 2 2 4 1 6) > 2)]
+           m5 (->Monticulo '(11 10 7 7 9 5 2 2 4 1 6) > 2)
+           m6 (->Monticulo '(9 7 6 7 4 5 2 2 1) > 2)]
      (test/is (= m1 m2))
      (test/is (= m3 m4))
      (test/is (= (obtener-raiz m1) 10))
      (test/is (= (obtener-raiz m3) 1))
      (test/is (= (.datos (crear-monticulo-binario '())) []))
-     (test/is (= (anadir-nodo m1 11) m5))))
+     (test/is (= (anadir-nodo m1 11) m5))
+     (test/is (= (borrar-raiz m1) m6))
+       )
+              )
