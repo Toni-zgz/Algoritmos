@@ -77,6 +77,20 @@
               datos-nuevos
               (recur datos-nuevos nuevo-k))))))
 
+; borrar-raiz :: Monticulo -> Monticulo
+; esta función borra el elemento raiz y asegura la 
+; propiedad del monticulo.
+(defn borrar-raiz [mont]
+  (let [datos (into [] (.datos mont))
+        Tn (peek datos)
+        comparador (.comparador mont)
+        num-hijos (.numero-hijos mont)]
+    (-> datos
+      (pop)
+      (assoc 0 Tn)
+      (hundir comparador 1)
+      (->Monticulo comparador num-hijos))))
+
 ; iniciar :: Monticulo -> Monticulo
 ; esta función inicializa un monticulo.
 (defn iniciar [mont]
