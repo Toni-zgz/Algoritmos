@@ -169,6 +169,4 @@
      (test/is (= (anadir-nodo m1 11) m5))
      (test/is (= (borrar-raiz m1) m6))
      (test/is (= (modificar-monticulo m1 5 9) m7))
-     (test/is (= (modificar-monticulo m1 2 3) m8))
-       )
-              )
+     (test/is (= (modificar-monticulo m1 2 3) m8))))
