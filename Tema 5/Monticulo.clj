@@ -28,27 +28,30 @@
 ; esta función hunde el nodo i para restablecer la propiedad del 
 ; monticulo.
 (defn hundir [datos op nodo]
-  (let [n (- (count datos) 1)]
+  (let [n (count datos)]
     (loop [datos-bucle datos
-           k (- nodo 1)]
+           k nodo]
         (let [j k
-              T2j (get datos-bucle (* 2 j))
-              Tk (get datos-bucle k)
-              T2j+1 (get datos-bucle (+ (* 2 j) 1))
-              Tj (get datos-bucle j)
-              nuevo-k1 (if (and (<= (* 2 j) n)
+              kx2 (* 2 j)
+              kx2+1 (+ (* 2 j) 1)
+              T2j (get datos-bucle (- kx2 1))
+              Tk (get datos-bucle (- k 1))
+              T2j+1 (get datos-bucle (- kx2+1 1))
+              Tj (get datos-bucle (- j 1))
+              nuevo-k1 (if (and (<= kx2 n)
                                 (op T2j Tk)) 
-                           (* 2 j)
+                           kx2
                            k)
-              Tk1 (get datos-bucle nuevo-k1)
-              nuevo-k2 (if (and (< (* 2 j) n)
+              Tk1 (get datos-bucle (- nuevo-k1 1))
+              nuevo-k2 (if (and (< kx2 n)
                                 (op T2j+1 Tk1)) 
-                           (+ (* 2 j) 1)
+                           (+ kx2 1)
                            nuevo-k1)
-              nuevo-Tk (get datos-bucle nuevo-k2)
+              nuevo-Tk (get datos-bucle (- nuevo-k2 1))
               datos-nuevos (-> datos-bucle 
-                             (assoc j nuevo-Tk)
-                             (assoc nuevo-k2 Tj))]
+                             (assoc (- j 1) nuevo-Tk)
+                             (assoc (- nuevo-k2 1) Tj))]
+          ;(println datos-nuevos)
           (if (= j nuevo-k2)
               datos-nuevos 
               (recur datos-nuevos nuevo-k2))))))
@@ -89,6 +92,19 @@
       (assoc 0 Tn)
       (hundir comparador 1)
       (->Monticulo comparador num-hijos))))
+
+; modificar-monticulo :: Monticulo -> Integer -> Integer -> Monticulo
+; Esta función modifica el valor de un nodo del monticulo.
+(defn modificar-monticulo [mont nodo valor]
+ (let [vec-datos (into [] (.datos mont))
+       op (.comparador mont)
+       num-hijos (.numero-hijos mont)
+       Ti (get vec-datos (- nodo 1))
+       nuevos-datos (assoc vec-datos (- nodo 1) valor)]
+   (-> (if (not (op valor Ti))
+           (hundir nuevos-datos op nodo)
+           (flotar nuevos-datos op nodo))
+       (->Monticulo op num-hijos))))
 
 ; iniciar :: Monticulo -> Monticulo
 ; esta función inicializa un monticulo.
@@ -138,11 +154,13 @@
 (require '[clojure.test :as test])
 (test/testing "Monticulo tests" 
      (let [m1 (crear-monticulo-binario '(1 6 9 2 7 5 2 7 4 10))
-           m2 (->Monticulo '(10 9 7 7 6 5 2 2 4 1) > 2)
+           m2 (->Monticulo '(10 7 9 4 7 5 2 2 1 6) > 2)
            m3 (crear-monticulo-binario-invertido '(1 6 9 2 7 5 2 7 4 10))
-           m4 (->Monticulo '(1 2 4 2 7 5 6 7 9 10) < 2)
-           m5 (->Monticulo '(11 10 7 7 9 5 2 2 4 1 6) > 2)
-           m6 (->Monticulo '(9 7 6 7 4 5 2 2 1) > 2)]
+           m4 (->Monticulo '(1 2 2 4 7 5 9 7 6 10) < 2)
+           m5 (->Monticulo '(11 10 9 4 7 5 2 2 1 6 7) > 2)
+           m6 (->Monticulo '(9 7 6 4 7 5 2 2 1) > 2)
+           m7 (->Monticulo '(10 9 9 4 7 5 2 2 1 6) > 2)
+           m8 (->Monticulo '(10 7 9 4 6 5 2 2 1 3) > 2)]
      (test/is (= m1 m2))
      (test/is (= m3 m4))
      (test/is (= (obtener-raiz m1) 10))
@@ -150,5 +168,7 @@
      (test/is (= (.datos (crear-monticulo-binario '())) []))
      (test/is (= (anadir-nodo m1 11) m5))
      (test/is (= (borrar-raiz m1) m6))
+     (test/is (= (modificar-monticulo m1 5 9) m7))
+     (test/is (= (modificar-monticulo m1 2 3) m8))
        )
               )
