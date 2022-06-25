@@ -14,15 +14,19 @@
       -1
       (loop [indice-inf 1
              indice-sup num-elem]
+        ; si se igualan los indices, es que el elemento
+        ; no esta en el vector.
         (if (= indice-inf indice-sup)
-          indice-inf
+          -1
           (let [indice-medio (int (/ (+ indice-inf indice-sup) 2))
-                valor_medio (get vect (- indice-medio 1))]
-            (if (<= elt valor_medio)
-              (recur indice-inf indice-medio)
-              (recur (+ indice-medio 1) indice-sup))))))))
+                valor-medio (get vect (- indice-medio 1))]
+            (cond 
+              (< elt valor-medio) (recur indice-inf indice-medio)
+              (= elt valor-medio) indice-medio
+              :else (recur (+ indice-medio 1) indice-sup))))))))
 
 ;; Ejemplo de utilización
 (require '[clojure.test :as test])
 (test/is (= (busqueda-binaria [3 5 10] 5) 2))
+(test/is (= (busqueda-binaria [3 5 10] 7) -1))
 (test/is (= (busqueda-binaria [3 5 10] 51) -1))
