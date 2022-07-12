@@ -23,3 +23,7 @@
           vect1-ord (ordenar-por-fusion vect1) 
           vect2-ord (ordenar-por-fusion vect2)]
      (into [] (fusionar vect1-ord vect2-ord)))))
+
+;; Ejemplo de utilización
+(require '[clojure.test :as test])
+(test/is (= (ordenar-por-fusion [5 3 7 2 4 1 6]) [1 2 3 4 5 6 7]))
