@@ -11,7 +11,7 @@
         ; Ponemos la primera fila con 1s
         (let [s (first sec-s)]
           (aset array 0 s 1.0)
-          ; Rellenamos desde la esquina inferior izquierda
+          ; Rellenamos desde la esquina superior izquierda
           ; hasta la diagonal secundaria
           (loop [sec-k (range 1 s)]
             (if (= sec-k '())
@@ -23,6 +23,8 @@
                 (aset array k (- s k) nuevo-valor)
                 (recur (rest sec-k)))))
           (recur (rest sec-s)))))
+    ; Por ultimo, rellenamos desde la diagonal secundaria
+    ; hasta la esquina inferior derecha
     (loop [sec-s (range 1 (+ num-partidos 1))]
       (if (= sec-s '())
         array
@@ -37,3 +39,8 @@
                 (aset array (+ s k) (- num-partidos k) nuevo-valor)
                 (recur (rest sec-k)))))
           (recur (rest sec-s)))))))
+
+;;; Ejemplo de utilización
+(time (serie 10 0.6)) ; -> 226 ms
+(time (serie 100 0.6)) ; -> 2608 ms
+(time (serie 1000 0.6)) ; -> 77328 ms
