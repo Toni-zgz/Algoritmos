@@ -22,3 +22,6 @@
                 (aset array linea columna valor)
                 (recur (rest j-sec)))))
           (recur (rest i-sec)))))))
+
+; Ejemplo de utilización
+(pprint (monedas 8))
