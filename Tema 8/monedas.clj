@@ -1,8 +1,8 @@
 (ns monedas)
 
-(defn monedas [cantidad]
-  (let [monedas (vec '(1 4 6))
-        numero-monedas (count monedas)
+; monedas :: Long -> [Long] -> [Long, Long]
+(defn monedas [cantidad monedas-vec]
+  (let [numero-monedas (count monedas-vec)
         array (make-array Long/TYPE numero-monedas (+ cantidad 1))]
     (loop [i-sec (range 0 numero-monedas)]
       (if (= i-sec '())
@@ -13,7 +13,7 @@
               '()
               (let [columna (first j-sec)
                     inf 10000
-                    moneda-i (get monedas linea)
+                    moneda-i (get monedas-vec linea)
                     valor (cond
                             (and (= linea 0) (< columna moneda-i)) inf
                             (= linea 0) (+ 1 (aget array linea (- columna moneda-i)))
@@ -24,4 +24,4 @@
           (recur (rest i-sec)))))))
 
 ; Ejemplo de utilización
-(pprint (monedas 8))
+(pprint (monedas 8 [1 4 6]))
