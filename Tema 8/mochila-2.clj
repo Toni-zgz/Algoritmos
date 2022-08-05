@@ -26,5 +26,5 @@
                 (recur (rest j-sec)))))
           (recur (rest i-sec))))))))
 
-(defn- main []
-       (pprint (mochila-2 [1 2 5 6 7] [1 6 18 22 28] 11)))
+; Ejemplo de utilización
+(pprint (mochila-2 [1 2 5 6 7] [1 6 18 22 28] 11))
