@@ -1,4 +1,4 @@
-Licencia MIT
+ Licencia MIT
 
 Copyright (c) 2022 Antonio Julián Arrieta Cuartero
 
