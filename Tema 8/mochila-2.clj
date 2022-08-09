@@ -28,6 +28,25 @@
                 (recur (rest j-sec)))))
           (recur (rest i-sec))))))))
 
+; mochila2 :: [Long] -> [Long] -> Long -> Long -> Long -> Long
+(defn mochila-2-rec [pesos-vec valores-vec peso-max fila columna valor-acc]
+  (if (not (= (count pesos-vec) (count valores-vec)))
+    (println "Error: los vectores pesos y valores no tienen la misma longitud")
+    (let [peso-fila (get pesos-vec fila)
+          valor-fila (get valores-vec fila)
+          ultima-fila (- (count pesos-vec) 1)
+          ultima-columna peso-max] 
+      (cond 
+        (and (= fila nil) (= columna nil)) (mochila-2-rec pesos-vec valores-vec peso-max ultima-fila ultima-columna 0)
+        (and (= fila 0) (< columna peso-fila)) valor-acc
+        (= fila 0) (mochila-2-rec pesos-vec valores-vec peso-max fila (- columna peso-fila) (+ valor-fila valor-acc))
+        (< columna peso-fila) (mochila-2-rec pesos-vec valores-vec peso-max (dec fila) columna valor-acc)
+        :else (max (mochila-2-rec pesos-vec valores-vec peso-max fila (- columna peso-fila) (+ valor-fila valor-acc)) (mochila-2-rec pesos-vec valores-vec peso-max (dec fila) columna valor-acc))))))   
+
+(def mochila-2-memo (memoize mochila-2-rec))
+
 ; Ejemplo de utilización
 (pprint (mochila-2 [1 2 5 6 7] [1 6 18 22 28] 11))
 (time (mochila-2 [1 2 5 6 7] [1 6 18 22 28] 11))
+(time (mochila-2-rec [1 2 5 6 7] [1 6 18 22 28] 11 nil nil 0))
+(time (mochila-2-memo [1 2 5 6 7] [1 6 18 22 28] 11 nil nil 0))
