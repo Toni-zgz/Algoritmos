@@ -14,13 +14,14 @@
             (if (= j-sec '())
               '()
               (let [columna (first j-sec)
+                    Inf- -1000
                     peso-i (get pesos-vec linea)
                     valor-i (get valores-vec linea)
                     valor-fila-ant (if (= linea 0) 
-                                     -1
+                                     Inf-
                                      (aget array (- linea 1) columna))
                     valor-columna-ant (if (< columna peso-i ) 
-                                        -1
+                                        Inf-
                                         (aget array linea (- columna peso-i)))
                     valor (max valor-fila-ant (+ valor-columna-ant valor-i))]
                 (aset array linea columna valor)
