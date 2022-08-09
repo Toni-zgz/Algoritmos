@@ -14,17 +14,19 @@
             (if (= j-sec '())
               '()
               (let [columna (first j-sec)
-                    neg -1
                     peso-i (get pesos-vec linea)
                     valor-i (get valores-vec linea)
-                    valor (cond
-                            (and (= linea 0) (< columna peso-i)) neg
-                            (= linea 0) (+ (aget array linea (- columna peso-i)) valor-i)
-                            (< columna peso-i) (aget array (- linea 1) columna)
-                            :else (max (aget array (- linea 1) columna) (+ (aget array linea (- columna peso-i)) valor-i)))]
+                    valor-fila-ant (if (= linea 0) 
+                                     -1
+                                     (aget array (- linea 1) columna))
+                    valor-columna-ant (if (< columna peso-i ) 
+                                        -1
+                                        (aget array linea (- columna peso-i)))
+                    valor (max valor-fila-ant (+ valor-columna-ant valor-i))]
                 (aset array linea columna valor)
                 (recur (rest j-sec)))))
           (recur (rest i-sec))))))))
 
 ; Ejemplo de utilización
 (pprint (mochila-2 [1 2 5 6 7] [1 6 18 22 28] 11))
+(time (mochila-2 [1 2 5 6 7] [1 6 18 22 28] 11))
