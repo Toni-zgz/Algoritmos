@@ -1,4 +1,4 @@
-(deftype Grafo-adya [valor adyacente]
+deftype Grafo-adya [valor adyacente]
   java.lang.Object
   (equals [this other]
      (and
@@ -20,4 +20,4 @@
 (require '[clojure.test :as test])
 (def nodos [:alfa, :beta, :gamma, :delta])
 (def aristas ['(:alfa :beta) '(:alfa :gamma) '(:beta :delta) '(:gamma :alfa) '(:gamma :beta) '(:gamma :delta)])
-(def grafo-a (nuevo-grafo-adya nodos aristas))
+(def grafo (nuevo-grafo-adya nodos aristas))
