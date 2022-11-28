@@ -1,6 +1,6 @@
 (ns n-reinas)
 
-; movimientos-validos :: (Long) -> (Long)
+; movimientos-validos :: (Long) -> Long -> (Long)
 (defn movimientos-validos [lista num-filas]
   (let [rango (range 0 num-filas)
         columna (count lista)

@@ -1,7 +1,5 @@
 (ns integración)
 
-(require '[clojure.test :as test])
-
 ; area :: [(Long Long)] -> Long
 (defn- area [vertices]
        (loop [entrada vertices
@@ -35,6 +33,8 @@
           (recur nuevo-num-valores nueva-suma))))))
 
 ; Ejemplo de uso
+(require '[clojure.test :as test])
+
 (defn fact [n]
   (loop [n-bucle n
          result 1]
