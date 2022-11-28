@@ -18,25 +18,8 @@
                                    (recur (+ idx 1) nuevo-ary2))))))
         ; no-esta-en :: (Long) -> (Long) -> (Long)
         no-esta-en (fn [lst-origen lst-excluidos]
-                (let [lst-origen-ord (sort lst-origen)
-                      lst-excluidos-ord (sort lst-excluidos)]
-                  (loop [lst-origen-bucle lst-origen-ord
-                         lst-excluidos-bucle lst-excluidos-ord
-                         lst-salida '()]
-                    (cond (= lst-origen-bucle '()) lst-salida
-                      (= lst-excluidos-bucle '()) (concat lst-salida lst-origen-bucle)
-                      :else (let [elem-origen (first lst-origen-bucle)
-                                  elem-excluidos (first lst-excluidos-bucle)
-                                  nueva-lst-origen (if (<= elem-origen elem-excluidos)
-                                                     (rest lst-origen-bucle)
-                                                     lst-origen-bucle)
-                                  nueva-lst-excluidos (if (< elem-origen elem-excluidos)
-                                                        lst-excluidos-bucle
-                                                        (rest lst-excluidos-bucle))
-                                  nueva-lst-salida (if (< elem-origen elem-excluidos)
-                                                     (conj lst-salida elem-origen)
-                                                     lst-salida)]
-                              (recur nueva-lst-origen nueva-lst-excluidos nueva-lst-salida))))))]
+                     (let [set-excluidos (set lst-excluidos)]
+                       (filter (fn [elt] (nil? (get set-excluidos elt))) lst-origen)))]
     (->> lista
       (into [])
       (filas-prohibidas)
