@@ -63,6 +63,7 @@
 
 (defn ejemplo [num-reinas]
   (let [solucion (n-reinas-lv num-reinas)]
-    (if (second solucion)
-      (first solucion)
-      (ejemplo num-reinas))))
+    (cond (= num-reinas 2) "No se pueden posicionar 2 reinas"
+      (= num-reinas 3) "No se pueden posicionar 3 reinas"
+      (second solucion) (first solucion)
+      :else (ejemplo num-reinas))))
